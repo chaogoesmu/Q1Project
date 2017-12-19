@@ -53,7 +53,7 @@ function splitHoriz()
 function split(alignment, percentage)
 {
   let buildString="";
-  if(alignment=="row")
+  if(alignment!=="row")
   {
     buildString += Cel(100,percentage);
     buildString += Cel(100,100-percentage);
