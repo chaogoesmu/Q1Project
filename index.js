@@ -7,55 +7,84 @@
 //have a canvas
 //have a cell in the canvas
   //cells should be a recursive collection
-
+function randomColor()
+{
+  return '#'+Math.floor(Math.random()*16777215).toString(16);
+}
 class Cel
 {
-  constructor(width, height, alignment="row"){
+  constructor(width, height){
     this.width = width;
     this.height = height;
     this.child = [];
-    this.color = "";
+    this.color = randomColor();
     this.content = "";
-    this.set(alignment);
+    this.alignment="";
   }
 
   //create two new cells whenever needed
-  function split(percentage)
+  split(percentage, alignment)
   {
-    if(this.alignment="row")
+    this.content="";
+    this.alignment = alignment;
+    if(alignment=="row")
     {
-      this.child.push(new Cel(percentage,100,"column"));
-      this.child.push(new Cel(100-percentage,100"column"));
+      this.child.push(new Cel(100,percentage));
+      this.child.push(new Cel(100,100-percentage));
     }
     else
     {
-      this.child.push(new Cel(100,percentage"row"));
-      this.child.push(new Cel(100,100-percentage"row"));
+      this.child.push(new Cel(percentage,100));
+      this.child.push(new Cel(100-percentage,100));
     }
   }
-  function render(buildString = "")
+  render()
   {
-    buildString += '<div style="display: flex; flex-direction:'+ this.alignment +
-    ' background-color: '+this.color+'; width: '+this.width+'%; height: '+this.height+'%>"'
-    buildString += this.content;
-    this.child.forEach(x=>render(buildString));
-    buildString += '<div>'
+    var buildString = '';
+
+    if(this.child.length>0)
+    {
+      buildString +='<div style="flex-direction:'+ this.alignment +
+      '; background-color: '+this.color+'; width: '+this.width+'%; height: '+this.height+'%;">';
+      buildString += this.content;
+    }
+    else {
+      buildString +='<div style= "background-color: '+this.color+'; width: '+this.width+'%; height: '+this.height+'%;">';
+    }
+    this.child.forEach(x=>buildString +=x.render());
+    buildString += '</div>'
+    return buildString;
   }
 }
+function split2()
+{
+  targetCel.split()
+}
+//something else that grabs the target and gives a targetCel var
+var gridDisp = document.querySelector('.gRight');
+var test=new Cel(100,100);
+test.color="red";
+test.split(50,"row");
+test.child[0].split(50,"row");
+test.child[0].child[0].split(50,"row");
+gridDisp.innerHTML = test.render();
+console.log(test.render());
 
-
+/*
 var canvas = document.getElementById('canvas'),
     coord = document.getElementById('coord'),
     ctx = canvas.getContext('2d'), // get 2D context
     imgCat = new Image();
 
 /*********** draw image *************/
+/*
 imgCat.src = 'http://c.wearehugh.com/dih5/openclipart.org_media_files_johnny_automatic_1360.png';
 imgCat.onload = function() { // wait for image load
     ctx.drawImage(imgCat, 0, 0); // draw imgCat on (0, 0)
 };
 
 /*********** handle mouse events on canvas **************/
+/*
 var mousedown = false;
 ctx.strokeStyle = '#0000FF';
 ctx.lineWidth = 5;
@@ -82,6 +111,7 @@ canvas.onmouseup = function(e) {
 
 /********** utils ******************/
 // Thanks to http://stackoverflow.com/questions/55677/how-do-i-get-the-coordinates-of-a-mouse-click-on-a-canvas-element/4430498#4430498
+/*
 function fixPosition(e, gCanvasElement) {
     var x;
     var y;
@@ -99,3 +129,4 @@ function fixPosition(e, gCanvasElement) {
     y -= gCanvasElement.offsetTop;
     return {x: x, y:y};
 }
+*/
