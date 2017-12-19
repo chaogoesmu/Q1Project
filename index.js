@@ -1,3 +1,90 @@
+// **** GLOBAL VARIABLES **** //
+var setFunc = ()=>{};
+var targetCel = undefined;
+
+// **** Event listeners ****//
+document.body.querySelector('.gridArea').addEventListener('click', execute);
+
+// **** Click Options and setter functions ****//
+
+function setFunction(selection)
+{
+  //console.log('selections' + selection)
+  switch(selection){
+    case 1:
+      console.log('splitting vertically');
+      setFunc = splitVert;
+      break;
+    case 2:
+      console.log('splitting horizontally');
+      setFunc = splitHoriz;
+      break;
+    case 3:
+      //TODO: make the assign code thingy go here.
+      break;
+    default:
+      console.log('selection out of bounds.')
+      break;
+  }
+}
+
+//function to do whatever it is that I have set.
+function execute(event)
+{
+  console.log('execution entered ' + event.target);
+  targetCel = event.target;
+  setFunc();
+}
+
+//TODO: grab the x/y relative to the div so we can send percentages as well.
+// stretch goals, have it draw a line where you click to the edges of the div so you know where you clicked and where it will split.
+
+function splitVert()
+{
+  split("column",50);
+}
+
+function splitHoriz()
+{
+  split("row", 50)
+}
+
+//split the div with two new cells
+function split(alignment, percentage)
+{
+  let buildString="";
+  if(alignment=="row")
+  {
+    buildString += Cel(100,percentage);
+    buildString += Cel(100,100-percentage);
+  }
+  else {
+    buildString += Cel(percentage,100);
+    buildString += Cel(100-percentage,100);
+  }
+  console.log('build string', buildString)
+  targetCel.style['flex-direction'] = alignment;
+  targetCel.innerHTML = buildString;
+}
+
+//cel creator helper function
+function Cel(width, height)
+{
+  return '<div style= "background-color: ' + randomColor() + '; width: ' + width + '%; height: '+ height + '%;"></div>';
+}
+
+
+
+// **** Misc ****//
+function randomColor()
+{
+  return '#'+Math.floor(Math.random()*16777215).toString(16);
+}
+
+
+/*
+
+
 //Have a text field you can fill out to add code bits
 //have a display of all code bits.
 //be able to select code bits
