@@ -3,8 +3,8 @@ var setFunc = ()=>{};
 var targetCel = undefined;
 
 // **** Event listeners ****//
-document.body.querySelector('.gridArea').addEventListener('click', execute);
-
+var gridArea= document.body.querySelector('.gridArea');
+gridArea.addEventListener('click', execute);
 // **** Click Options and setter functions ****//
 
 function setFunction(selection)
@@ -36,15 +36,31 @@ function insertCodeBits()
   setFunc = undefined;
 }
 
-//function to do whatever it is that I have set.
+function showCode()
+{
+  let code= '<div class="gRight gridArea" style="display: flex; width: 100%; height: 100vh; background-color: grey">';
+  code+=gridArea.innerHTML;
+  code+='</div>'
+  gridArea.innerHTML = "";
+  gridArea.innerText = code;
+}
+
+//function to do whatever it is that I have set, also saves to local storage on each change
 function execute(event)
 {
   targetCel = event.target;
   setFunc();
+  savestate()
 }
 
 //TODO: grab the x/y relative to the div so we can send percentages as well.
 // stretch goals, have it draw a line where you click to the edges of the div so you know where you clicked and where it will split.
+
+function cls()
+{
+  gridArea.innerHTML = "";
+  savestate();
+}
 
 function splitVert()
 {
@@ -59,6 +75,8 @@ function splitHoriz()
 //split the div with two new cells
 function split(alignment, percentage)
 {
+  percentage = prompt("Cel Width?","50");//workaround for now
+  percentage=(percentage>0&&percentage<100)?percentage:50;//error checking
   let buildString="";
   if(alignment!=="row")
   {
@@ -78,7 +96,7 @@ function split(alignment, percentage)
 //cel creator helper function
 function Cel(width, height)
 {
-  return '<div style= "background-color: ' + randomColor() + '; width: ' + width + '%; height: '+ height + '%;"></div>';
+  return '<div class = "cel" style= "background-color: white' + /*randomColor() +*/ '; width: ' + width + '%; height: '+ height + '%;"></div>';
 }
 
 
@@ -92,6 +110,19 @@ function randomColor()
 }
 
 
+// **** Load/saves state ****//
+function loadState()
+{
+  gridArea.innerHTML = JSON.parse(localStorage.getItem("code"));
+}
+function savestate()
+{
+  localStorage.setItem('code', JSON.stringify(gridArea.innerHTML));
+}
+
+// **** initial run code ****//
+
+loadState();
 /*
 
 

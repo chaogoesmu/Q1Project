@@ -8,3 +8,7 @@
 .gRight{
   grid-column:2/span 1;
 }
+.cel{
+  border-style: solid;
+  border-width: thin;
+}
