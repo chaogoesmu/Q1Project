@@ -20,18 +20,25 @@ function setFunction(selection)
       setFunc = splitHoriz;
       break;
     case 3:
-      //TODO: make the assign code thingy go here.
+      setFunc = insertCodeBits;
       break;
     default:
-      console.log('selection out of bounds.')
+      console.log('selection out of bounds.');
       break;
   }
+}
+
+function insertCodeBits()
+{
+  codeBits = document.body.querySelector('textarea');
+  targetCel.innerHTML = codeBits.value;
+  codeBits.value="";
+  setFunc = undefined;
 }
 
 //function to do whatever it is that I have set.
 function execute(event)
 {
-  console.log('execution entered ' + event.target);
   targetCel = event.target;
   setFunc();
 }
@@ -64,6 +71,7 @@ function split(alignment, percentage)
   }
   console.log('build string', buildString)
   targetCel.style['flex-direction'] = alignment;
+  targetCel.style['display'] = "flex";
   targetCel.innerHTML = buildString;
 }
 
@@ -72,6 +80,8 @@ function Cel(width, height)
 {
   return '<div style= "background-color: ' + randomColor() + '; width: ' + width + '%; height: '+ height + '%;"></div>';
 }
+
+
 
 
 
